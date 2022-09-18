@@ -37,9 +37,11 @@ const userSchema = new Schema({
     purchases: {
         type: Array, 
         default: []
-    }
+    }, 
+    
 
-})
+},
+{timestamps: true})
 
 userSchema.virtual("password")
 .set(function(password){
