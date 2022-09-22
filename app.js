@@ -12,10 +12,7 @@ const cors = require('cors')
 //LOCAL PACKAGES
 const authRoutes = require("./routes/auth")
 
-//MIDDLEWARE
- app.use(bodyParser.json)
- app.use(cookieParser())
- app.use(cors())
+
 
 //CONNECTING TO MONGODB
 mongoose.connect(process.env.DATABASE, {
@@ -27,12 +24,18 @@ useCreateIndex:true
     
  })
 
+ //MIDDLEWARE
+ app.use(bodyParser.json())
+ app.use(cookieParser())
+ app.use(cors())
+ //ROUTES
+app.use("/api", authRoutes)
+
+
 //PORT
-const port = process.env.port || 8000;
+const port = process.env.PORT || 8000;
 //STARTING A SERVER
 app.listen(port, ()=> {
     console.log(`app is running at ${port}`)
 })
 
-//ROUTES
-app.use("/api", authRoutes)

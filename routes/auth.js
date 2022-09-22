@@ -6,4 +6,4 @@ router.get("/signout", (req,res)=> {
     res.send("user signout")
 })
 
-module.exports = router
+module.exports = router;
