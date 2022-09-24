@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const crypto = require('crypto')
 const uuidv1 = require('uuid/v1')
+
 const userSchema = new Schema({
     name: {
         type: String, 
@@ -28,6 +29,7 @@ const userSchema = new Schema({
     encry_password: {
         type: String, 
         required: true
+        
     }, 
     salt: String, 
     role: {
@@ -54,7 +56,7 @@ userSchema.virtual("password")
 })
 
 //it is  a methid in a class that is available to all other variables in this document
-userSchema.method = {
+userSchema.methods = {
     authenticate: function(plainpassword){
         return this.securePassword(plainpassword) === this.encry_password
     },
@@ -62,12 +64,14 @@ userSchema.method = {
     securePassword: function(plainpassword){
         if(!plainpassword) return ""
         try{
-            return crypto.createHmac('shan256', this.salt)
-            .update(plainpassword)
-            .digest('hex')
+            const hash = crypto.createHmac('sha256', this.salt)
+               .update(plainpassword)
+               .digest('hex');
+                console.log(hash);
+            return hash
         }catch (err){
-            return ""
+            return err.message
         }
     }
 }
-module.exports = mongoose.model("User","userSchema")
+module.exports = mongoose.model("User",userSchema)
